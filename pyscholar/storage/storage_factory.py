@@ -13,9 +13,4 @@ class StorageFactory:
 
     @staticmethod
     def create_storage(item, class_name=None):
-        module = __import__("storage_strategies")
-        if hasattr(module, class_name):
-            class_ = getattr(module, class_name)
-            return class_()
-
         return CSVStorageStrategy()

@@ -1,4 +1,3 @@
-import re
 from .item_interface import ItemInterface
 
 
@@ -10,6 +9,7 @@ class Item(ItemInterface):
         self.file_url = ''
         self.source = ''
         self.authors = []
+        self.year = ''
         self.abstract = ''
         self.citations = ''
         self.related_articles = ''
@@ -18,4 +18,9 @@ class Item(ItemInterface):
         return [x for x in self.__dict__.keys()]
 
     def to_storage(self):
+        # import ipdb; ipdb.set_trace()
         return [x for x in self.__dict__.values()]
+
+    @property
+    def columns(self):
+        return self.get_columns()

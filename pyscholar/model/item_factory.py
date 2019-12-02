@@ -13,9 +13,4 @@ class ItemFactory:
 
     @staticmethod
     def create_item(name):
-        class_name = get_item_class_name(name)
-        module = __import__("items")
-        if hasattr(module, class_name):
-            class_ = getattr(module, class_name)
-            return class_()
         return Item()

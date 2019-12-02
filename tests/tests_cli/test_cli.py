@@ -1,6 +1,6 @@
 import os
 
-import cli
+from pyscholar import cli
 import unittest
 from click.testing import CliRunner
 

@@ -1,11 +1,12 @@
 import pandas as pd
-from pyscholar.config import config
+
+from pyscholar.config.config import Config
 
 
 class CSVStorageStrategy:
 
     def __init__(self):
-        config_ = config.get_config()
+        config_ = Config()
         self.file_name = config_.get_storage_file_name()
         self.items = []
 
@@ -13,6 +14,18 @@ class CSVStorageStrategy:
         self.items.append(item.to_storage())
 
     def save(self):
+        columns = [
+            'title',
+            'file_type',
+            'file_url',
+            'source',
+            'authors',
+            'year',
+            'abstract',
+            'citations',
+            'related_articles'
+        ]
+
         if self.items:
-            df = pd.DataFrame(self.items, columns=self.items[0].get_columns())
+            df = pd.DataFrame(self.items, columns=columns)
             df.to_csv(self.file_name)

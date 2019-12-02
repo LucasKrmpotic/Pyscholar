@@ -1,7 +1,11 @@
+import os.path
+import sys
 from configparser import ConfigParser, RawConfigParser
+
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pyscholar.model.meta import Singleton
 
@@ -16,8 +20,11 @@ def _get_class_name(name):
 
 class Config(metaclass=Singleton):
 
-    def __init__(self, config_file='/home/lucas/Ingenieria/planificacion/Hito-2/pyscholar/pyscholar/config/config.ini'):
+    def __init__(self, config_file=None):
+        if config_file is None:
+            config_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'config.ini')
         self.config_file = config_file
+
         self.parser = ConfigParser()
         self.parser.read(self.config_file)
         self.errors = []
@@ -34,6 +41,9 @@ class Config(metaclass=Singleton):
         self._save()
 
     def get_driver(self):
+        # cap = DesiredCapabilities().FIREFOX
+        # cap["marionette"] = False
+
         binary = FirefoxBinary(self._get_firefox_binary_path())
         driver = webdriver.Firefox(firefox_binary=binary)
         driver.wait = WebDriverWait(driver, 5)
@@ -66,3 +76,9 @@ class Config(metaclass=Singleton):
     @property
     def sections(self):
         return self.parser.sections()
+
+    def _get_firefox_binary_path(self):
+        return self.parser['driver']['firefox_binary']
+
+    def _get_start_url(self):
+        return 'https://scholar.google.com.ar/scholar?hl=es&as_sdt=0%2C5&q=smart+cities&btnG='
